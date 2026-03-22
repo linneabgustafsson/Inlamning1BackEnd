@@ -16,7 +16,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    public MemberController(MemberServiceImpl memberServiceImpl, MemberServiceImpl memberService) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 

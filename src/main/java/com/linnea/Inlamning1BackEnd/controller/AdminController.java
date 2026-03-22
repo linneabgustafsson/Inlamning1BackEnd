@@ -5,7 +5,6 @@ import com.linnea.Inlamning1BackEnd.dto.MemberAllDataDto;
 import com.linnea.Inlamning1BackEnd.dto.MemberUpdatePatchDto;
 import com.linnea.Inlamning1BackEnd.dto.MemberUpdatePutDto;
 import com.linnea.Inlamning1BackEnd.service.MemberService;
-import com.linnea.Inlamning1BackEnd.service.MemberServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ public class AdminController {
 
     private final MemberService memberService;
 
-    public AdminController(MemberServiceImpl memberServiceImpl) {
-        this.memberService = memberServiceImpl;
+    public AdminController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @GetMapping

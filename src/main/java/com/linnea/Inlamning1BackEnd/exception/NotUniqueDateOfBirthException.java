@@ -4,6 +4,6 @@ public class NotUniqueDateOfBirthException extends RuntimeException {
 
     public NotUniqueDateOfBirthException() {
 
-        super("Date of birth måste vara unikt.");
+        super("Födelsedata måste vara unikt, dubbletter ej tillåtet.");
     }
 }

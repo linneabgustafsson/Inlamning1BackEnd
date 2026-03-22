@@ -23,26 +23,13 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        //Helt publika endpoints
-                        //.requestMatchers("/admin/members").permitAll()
-
-                        //Borde väl bara vara admins här?
-                        //Eller behöver medlemmen ha tillgång till databasen
-                        //för att se myPages?
                         .requestMatchers("/h2-console/**").permitAll()
 
-                         //Endpoints för admins
                         .requestMatchers("/admin/members/**").hasRole("ADMIN")
 
-                        //Endpoints för medlemmar
-                        //  /** betyder alltså allt
                         .requestMatchers("/mypages/members/**").hasAnyRole("ADMIN", "MEMBER")
 
-
-                        //Om alla andra endpoints kräver inloggning
                         .anyRequest().authenticated()
-
-
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .httpBasic(Customizer.withDefaults());

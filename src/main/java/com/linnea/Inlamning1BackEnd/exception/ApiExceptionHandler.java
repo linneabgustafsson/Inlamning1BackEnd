@@ -47,7 +47,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(MemberNotAuthorizedException.class)
-    public ResponseEntity<?> handleFelMedlem(MemberNotAuthorizedException e, HttpServletRequest getPath) {
+    public ResponseEntity<?> handleMemberNotAuthorizedException(MemberNotAuthorizedException e, HttpServletRequest getPath) {
         LinkedHashMap<String, Object> errorResponse403Forbidden = new LinkedHashMap<>();
         errorResponse403Forbidden.put("timestamp", LocalDateTime.now().format(dateTimeFormatter));
         errorResponse403Forbidden.put("status", HttpStatus.FORBIDDEN.value());
@@ -58,40 +58,31 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse403Forbidden);
     }
 
-    //NAMN PÅ METODEN
-    //Kod 400 Bad Request - skrivit in text i dateOfBirth
-    //Fel innan din controller ens börjar köra - requesten kommer aldrig fram till metoden
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleExceptionBadRequest(HttpServletRequest requestSomHamtarPath){
+    public ResponseEntity<?> handleExceptionBadRequest(HttpServletRequest getPath){
 
-        //Vad ska stå i meddelandet?
         LinkedHashMap<String, Object> errorResponse400BadRequest = new LinkedHashMap<>();
         errorResponse400BadRequest.put("timestamp", LocalDateTime.now().format(dateTimeFormatter));
         errorResponse400BadRequest.put("status", HttpStatus.BAD_REQUEST.value());
         errorResponse400BadRequest.put("error", "Bad request");
-        errorResponse400BadRequest.put("message", "Du har skrivit in ett otillåtet eller felaktigt värde");
-        errorResponse400BadRequest.put("path", requestSomHamtarPath.getRequestURI());
+        errorResponse400BadRequest.put("message", "Ett fält innehåller otillåtet eller felaktigt värde.");
+        errorResponse400BadRequest.put("path", getPath.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse400BadRequest);
     }
 
-    //Kod 400 Bad Request - lämnat ett tomt fält el. för lång input
-    //Det är fel från @Valid
-    //Här lyckas Spring först läsa in JSON till DTO:n. Men sedan körs valideringen.
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleExceptionBadRequest2(HttpServletRequest requestSomHamtarPath)   {
+    public ResponseEntity<?> handleExceptionBadRequest2(HttpServletRequest getPath)   {
 
-        //Vad ska stå i meddelandet?
         LinkedHashMap<String, Object> errorResponse400BadRequest = new LinkedHashMap<>();
         errorResponse400BadRequest.put("timestamp", LocalDateTime.now().format(dateTimeFormatter));
         errorResponse400BadRequest.put("status", HttpStatus.BAD_REQUEST.value());
         errorResponse400BadRequest.put("error", "Bad request");
-        errorResponse400BadRequest.put("message", "Ett fält som inte får vara tomt är tomt," +
-                " text i något fält överstiger tillåtet antal tecken," +
-                " NÅGOT MER?");
-        errorResponse400BadRequest.put("path", requestSomHamtarPath.getRequestURI());
+        errorResponse400BadRequest.put("message", "Ett fält som inte får vara tomt är tomt eller" +
+                " text i fält överstiger tillåtet antal tecken.");
+        errorResponse400BadRequest.put("path", getPath.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse400BadRequest);
     }
